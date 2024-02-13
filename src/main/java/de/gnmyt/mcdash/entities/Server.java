@@ -90,7 +90,7 @@ public class Server {
      * Starts the "keep alive" thread
      * This thread will check if the server is still running and will set the status to offline if the server stopped
      */
-    public void keepAlive() {
+    public void checkHealth() {
         keepAliveThread = new Thread(() -> {
             try {
                 process.waitFor();
@@ -101,7 +101,7 @@ public class Server {
             setProcess(null);
             LOG.info("Process of server {} stopped", name);
         });
-        keepAliveThread.setName("ServerKeepAliveThread-" + name);
+        keepAliveThread.setName("HealthCheckThread-" + name);
         keepAliveThread.start();
     }
 
