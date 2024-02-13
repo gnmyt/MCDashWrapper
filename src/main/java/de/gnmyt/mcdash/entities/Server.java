@@ -95,7 +95,7 @@ public class Server {
             try {
                 process.waitFor();
             } catch (InterruptedException e) {
-                LOG.error("An error occurred while waiting for the server to stop", e);
+                LOG.error("An error occurred while waiting for the server to stop", e.getMessage());
             }
             setStatus(ServerStatus.OFFLINE);
             setProcess(null);
@@ -105,4 +105,12 @@ public class Server {
         keepAliveThread.start();
     }
 
+    @Override
+    public String toString() {
+        return "Server{" +
+                "name='" + name + '\'' +
+                ", status=" + status +
+                ", configuration=" + configuration +
+                '}';
+    }
 }
