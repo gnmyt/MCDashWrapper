@@ -42,8 +42,10 @@ public class ServerManager {
 
         servers.forEach(server -> {
             if (server.getStatus() == ServerStatus.ONLINE) return;
-            startServer(server);
+            if (server.getConfiguration().isAutoStart()) startServer(server);
         });
+
+        LOG.info("All servers have been started");
     }
 
     /**

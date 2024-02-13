@@ -17,6 +17,7 @@ public class ServerConfiguration {
     private String version;
     private String description;
     private int memory;
+    private boolean autoStart;
 
     /**
      * Loads a server configuration from a file
@@ -102,6 +103,14 @@ public class ServerConfiguration {
     }
 
     /**
+     * Gets the auto start of the server
+     * @return The auto start of the server
+     */
+    public boolean isAutoStart() {
+        return autoStart;
+    }
+
+    /**
      * Sets the description of the server
      *
      * @param description The new description of the server
@@ -148,6 +157,15 @@ public class ServerConfiguration {
      */
     public void setName(String name) {
         this.name = name;
+        save();
+    }
+
+    /**
+     * Sets the auto start of the server
+     * @param autoStart The new auto start of the server
+     */
+    public void setAutoStart(boolean autoStart) {
+        this.autoStart = autoStart;
         save();
     }
 }
