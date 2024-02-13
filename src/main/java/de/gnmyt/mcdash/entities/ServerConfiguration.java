@@ -7,6 +7,7 @@ import de.gnmyt.mcdash.api.Logger;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class ServerConfiguration {
 
@@ -183,6 +184,21 @@ public class ServerConfiguration {
     public void setAutoStart(boolean autoStart) {
         this.autoStart = autoStart;
         save();
+    }
+
+    /**
+     * Creates a new server configuration
+     * @return The created server configuration
+     */
+    public HashMap<String, Object> toHashMap() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("type", type);
+        map.put("version", version);
+        map.put("description", description);
+        map.put("memory", memory);
+        map.put("autoStart", autoStart);
+        return map;
     }
 
     @Override
