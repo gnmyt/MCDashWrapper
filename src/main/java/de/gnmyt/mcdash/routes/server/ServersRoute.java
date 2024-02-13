@@ -1,16 +1,18 @@
 package de.gnmyt.mcdash.routes.server;
 
+import de.gnmyt.mcdash.MCDashWrapper;
 import de.gnmyt.mcdash.entities.Server;
 import de.gnmyt.mcdash.handler.DefaultHandler;
 import de.gnmyt.mcdash.http.Request;
 import de.gnmyt.mcdash.http.ResponseController;
+import org.apache.commons.io.FileUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static de.gnmyt.mcdash.routes.server.ServerStartRoute.serverManager;
 
-public class ListServersRoute extends DefaultHandler {
+public class ServersRoute extends DefaultHandler {
 
     @Override
     public void get(Request request, ResponseController response) throws Exception {
@@ -28,5 +30,23 @@ public class ListServersRoute extends DefaultHandler {
         }
 
         response.jsonArray(servers);
+    }
+
+    @Override
+    public void delete(Request request, ResponseController response) throws Exception {
+        if (!isStringInBody(request, response, "uuid")) return;
+
+        if (serverManager.getServer(getStringFromBody(request, "uuid")) == null) {
+            response.code(404).message("The server does not exist");
+            return;
+        }
+
+        serverManager.stopServer(serverManager.getServer(getStringFromBody(request, "uuid")));
+
+        FileUtils.deleteDirectory(MCDashWrapper.getDataSource("servers/" + getStringFromBody(request, "uuid")));
+
+        serverManager.refreshServers();
+
+        response.message("The server has been successfully deleted");
     }
 }
