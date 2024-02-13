@@ -14,7 +14,7 @@ public class ServerConfiguration {
     private final static Logger LOG = new Logger(ServerConfiguration.class);
 
     @Expose(serialize = false, deserialize = false)
-    private File file;
+    public File file;
 
     @Expose
     private String name;
@@ -59,13 +59,25 @@ public class ServerConfiguration {
         }
     }
 
+    public ServerConfiguration(String name, String type, String version, String description, int memory, boolean autoStart) {
+        this.name = name;
+        this.type = type;
+        this.version = version;
+        this.description = description;
+        this.memory = memory;
+        this.autoStart = autoStart;
+    }
+
+    public ServerConfiguration() {
+
+    }
+
     /**
      * Saves the server configuration to the file
      */
     public void save() {
         if (file == null) return;
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
+        String json = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
 
         try {
             FileUtils.writeStringToFile(file, json, "UTF-8");
