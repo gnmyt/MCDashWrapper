@@ -1,6 +1,8 @@
 package de.gnmyt.mcdash.entities;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import de.gnmyt.mcdash.api.Logger;
 import org.apache.commons.io.FileUtils;
 
@@ -10,13 +12,25 @@ public class ServerConfiguration {
 
     private final static Logger LOG = new Logger(ServerConfiguration.class);
 
+    @Expose(serialize = false, deserialize = false)
     private File file;
 
+    @Expose
     private String name;
+
+    @Expose
     private String type;
+
+    @Expose
     private String version;
+
+    @Expose
     private String description;
+
+    @Expose
     private int memory;
+
+    @Expose(serialize = true, deserialize = true)
     private boolean autoStart;
 
     /**
@@ -32,7 +46,9 @@ public class ServerConfiguration {
             if (!file.getName().endsWith(".json")) return null;
 
             String jsonRaw = FileUtils.readFileToString(file, "UTF-8");
-            ServerConfiguration configuration = new Gson().fromJson(jsonRaw, ServerConfiguration.class);
+
+            ServerConfiguration configuration =  new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+                    .fromJson(jsonRaw, ServerConfiguration.class);
             configuration.file = file;
 
             return configuration;
@@ -167,5 +183,17 @@ public class ServerConfiguration {
     public void setAutoStart(boolean autoStart) {
         this.autoStart = autoStart;
         save();
+    }
+
+    @Override
+    public String toString() {
+        return "ServerConfiguration{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", version='" + version + '\'' +
+                ", description='" + description + '\'' +
+                ", memory=" + memory +
+                ", autoStart=" + autoStart +
+                '}';
     }
 }
