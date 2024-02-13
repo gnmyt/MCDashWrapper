@@ -147,4 +147,11 @@ public class ServerManager {
         LOG.info("Server {} has been stopped", server.getName());
     }
 
+    /**
+     * Gets all servers
+     * @return all servers
+     */
+    public ArrayList<Server> getServers() {
+        return servers;
+    }
 }
