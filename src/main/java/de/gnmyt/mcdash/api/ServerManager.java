@@ -64,7 +64,7 @@ public class ServerManager {
      * Refreshes the servers
      */
     public void refreshServers() {
-        servers.stream().filter(server -> server.getStatus() == ServerStatus.OFFLINE).forEach(servers::remove);
+        servers.removeIf(server -> server.getStatus() == ServerStatus.OFFLINE);
 
         for (File file : serverFolder.listFiles()) {
             if (file.isDirectory() && new File(file, "mcdash.json").exists()) {
@@ -90,6 +90,7 @@ public class ServerManager {
 
     /**
      * Starts a server
+     *
      * @param server The server you want to start
      */
     public void startServer(Server server) {
@@ -119,6 +120,7 @@ public class ServerManager {
 
     /**
      * Stops a server
+     *
      * @param server The server you want to stop
      */
     public void stopServer(Server server) {
@@ -153,9 +155,19 @@ public class ServerManager {
 
     /**
      * Gets all servers
+     *
      * @return all servers
      */
     public ArrayList<Server> getServers() {
         return servers;
+    }
+
+    /**
+     * Gets the server version manager
+     *
+     * @return the server version manager
+     */
+    public ServerVersionManager getVersionManager() {
+        return versionManager;
     }
 }
