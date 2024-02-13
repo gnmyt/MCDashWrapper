@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -115,6 +116,26 @@ public class ResponseController {
         send();
     }
 
+    /**
+     * Sends a json response to the client (as an array)
+     * @param values The values you want to send
+     */
+    public final void jsonArray(ArrayList<HashMap<String, Object>> values) {
+        response.setContentType(ContentType.JSON);
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(values);
+
+        writeToOutput(json);
+        send();
+    }
+
+    /**
+     * Creates a new {@link JSONBuilder} instance
+     *
+     * @return the new {@link JSONBuilder} instance
+     */
     public JSONBuilder json() {
         return new JSONBuilder(this);
     }
