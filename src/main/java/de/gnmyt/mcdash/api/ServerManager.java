@@ -106,7 +106,7 @@ public class ServerManager {
             processBuilder.directory(new File(serverFolder, server.getName()));
             Process process = processBuilder.start();
 
-            server.keepAlive();
+            server.checkHealth();
 
             server.setStatus(ServerStatus.ONLINE);
             server.setProcess(process);
@@ -128,16 +128,20 @@ public class ServerManager {
 
         try {
             server.getProcess().getOutputStream().write("stop\n".getBytes());
+            server.getProcess().getOutputStream().flush();
 
-            for (int i = 0; i < 10; i++) {
-                if (server.getProcess().isAlive()) {
+            for (int i = 0; i < 20; i++) {
+                if (server.getProcess() != null && server.getProcess().isAlive()) {
                     Thread.sleep(1000);
                 } else {
                     break;
                 }
             }
 
-            server.getProcess().destroy();
+            if (server.getProcess() != null && server.getProcess().isAlive()) {
+                server.getProcess().destroy();
+            }
+
             server.setStatus(ServerStatus.OFFLINE);
             server.setProcess(null);
         } catch (Exception e) {
