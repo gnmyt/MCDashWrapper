@@ -24,6 +24,10 @@ public class ServersRoute extends DefaultHandler {
             serverObj.put("uuid", server.getName());
             serverObj.put("status", server.getStatus().name());
 
+            serverObj.put("motd", server.getProperties().getServerProperty("motd"));
+            serverObj.put("port", server.getProperties().getServerProperty("server-port"));
+            serverObj.put("icon", server.getBase64Icon());
+
             serverObj.put("configuration", server.getConfiguration().toHashMap());
 
             servers.add(serverObj);
