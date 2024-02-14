@@ -31,6 +31,11 @@ public class SetupRoute extends DefaultHandler {
         if (!isIntegerInBody(request, response, "memory")) return;
         if (!isBooleanInBody(request, response, "autoStart")) return;
 
+        if (!versionManager.getInstallers().containsKey(getStringFromBody(request, "type"))) {
+            response.code(404).message("The server software could not be found");
+            return;
+        }
+
         try {
             String uuid = UUID.randomUUID().toString().split("-")[0];
             MCDashWrapper.getDataSource("servers/" + uuid).mkdirs();
