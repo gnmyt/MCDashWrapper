@@ -8,7 +8,10 @@ import de.gnmyt.mcdash.entities.ServerConfiguration;
 import de.gnmyt.mcdash.handler.DefaultHandler;
 import de.gnmyt.mcdash.http.Request;
 import de.gnmyt.mcdash.http.ResponseController;
+import org.apache.commons.io.FileUtils;
 
+import java.util.Properties;
+import java.util.Random;
 import java.util.UUID;
 
 public class SetupRoute extends DefaultHandler {
@@ -52,7 +55,19 @@ public class SetupRoute extends DefaultHandler {
             configuration.file = MCDashWrapper.getDataSource("servers/" + uuid + "/mcdash.json");
             configuration.save();
 
+            Properties properties = new Properties();
+            properties.setProperty("server-port", new Random().nextInt(10000) + 10000 + "");
+            properties.setProperty("motd", String.format("§a%s§r\n§7%s", getStringFromBody(request, "name"), "powered by MCDash"));
+
+            properties.store(FileUtils.openOutputStream(MCDashWrapper.getDataSource("servers/" + uuid + "/server.properties")),
+                    "MCDash Server Properties");
+
+            FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/server-icon.png"),
+                    MCDashWrapper.getDataSource("servers/" + uuid + "/server-icon.png"));
+
             versionManager.installPlugin(uuid);
+
+            versionManager.setupPlugin(uuid, new Random().nextInt(10000) + 10000, "");
 
             serverManager.refreshServers();
 
