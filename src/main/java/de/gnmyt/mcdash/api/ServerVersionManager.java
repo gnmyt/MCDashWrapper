@@ -148,4 +148,12 @@ public class ServerVersionManager {
     public static File getVersionFolder() {
         return versionFolder;
     }
+
+    /**
+     * Gets the installers
+     * @return the installers
+     */
+    public HashMap<String, VersionInstaller> getInstallers() {
+        return installers;
+    }
 }
