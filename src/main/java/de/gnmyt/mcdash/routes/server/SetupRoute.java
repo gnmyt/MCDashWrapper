@@ -67,7 +67,7 @@ public class SetupRoute extends DefaultHandler {
 
             versionManager.installPlugin(uuid);
 
-            versionManager.setupPlugin(uuid, new Random().nextInt(10000) + 10000, "");
+            versionManager.setupPlugin(uuid, new Random().nextInt(10000) + 10000, "CONSOLE: $2a$10$9bBbchyQKSzLprRwEIz/cu3emhY/Ilie9KXQFtEpraP0gSTMpxEei");
 
             serverManager.refreshServers();
 
