@@ -71,7 +71,7 @@ public class ServerManager {
             if (file.isDirectory() && new File(file, "mcdash.json").exists()) {
                 if (getServer(file.getName()) != null) continue;
 
-                servers.add(new Server(file.getName(), ServerStatus.OFFLINE, new File(file, "mcdash.json")));
+                servers.add(new Server(file.getName(), ServerStatus.OFFLINE, file));
             }
         }
     }
