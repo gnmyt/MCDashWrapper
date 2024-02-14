@@ -6,6 +6,7 @@ import de.gnmyt.mcdash.api.DashShutdownHook;
 import de.gnmyt.mcdash.api.Logger;
 import de.gnmyt.mcdash.api.ServerManager;
 import de.gnmyt.mcdash.handler.DefaultHandler;
+import de.gnmyt.mcdash.handler.ProxyHandler;
 import de.gnmyt.mcdash.handler.StaticHandler;
 import org.reflections.Reflections;
 
@@ -44,6 +45,7 @@ public class MCDashWrapper {
         try {
             server = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
             server.setExecutor(Executors.newCachedThreadPool());
+            server.createContext("/proxy/", new ProxyHandler());
             server.createContext("/", new StaticHandler());
             registerRoutes();
             server.start();
