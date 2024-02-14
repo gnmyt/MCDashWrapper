@@ -12,6 +12,7 @@ public class ServerManager {
 
     private static final Logger LOG = new Logger(ServerManager.class);
     private static final ServerVersionManager versionManager = new ServerVersionManager();
+    private static final JavaVersionManager javaManager = new JavaVersionManager();
     private final ArrayList<Server> servers = new ArrayList<>();
 
     private final File serverFolder;
@@ -100,7 +101,8 @@ public class ServerManager {
         ServerConfiguration config = server.getConfiguration();
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "-Xmx" + config.getMemory() + "M",
+            ProcessBuilder processBuilder = new ProcessBuilder(javaManager.getPath(config.getVersion()),
+                    "-jar", "-Xmx" + config.getMemory() + "M",
                     "-Xms" + config.getMemory() + "M", "-Dcom.mojang.eula.agree=true", // "-Djava.awt.headless=true",
                     versionManager.getPath(config.getType(), config.getVersion())//, "nogui"
             );
