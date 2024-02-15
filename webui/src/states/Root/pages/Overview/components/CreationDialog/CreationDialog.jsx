@@ -14,7 +14,7 @@ import {
 import SpigotImage from "@/common/assets/software/spigot.webp";
 import PaperImage from "@/common/assets/software/paper.webp";
 import PurpurImage from "@/common/assets/software/purpur.webp";
-import {PROXY_URL, request} from "@/common/utils/RequestUtil.js";
+import {request} from "@/common/utils/RequestUtil.js";
 import {useContext, useEffect, useState} from "react";
 import {ServerContext} from "@/common/contexts/Server/index.js";
 import {t} from "i18next";
@@ -55,7 +55,8 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
         setCreating(true);
 
         await request("server/setup", "POST", {
-            name: serverName, description: serverDescription, type: serverSoftware, version: serverVersion,
+            name: serverName, description: serverDescription || t("server.creation.default_description"),
+            type: serverSoftware, version: serverVersion,
             memory: 4096, autoStart: false
         }, {}, false);
 
@@ -74,9 +75,7 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
             <DialogTitle>{t("server.creation.title")}</DialogTitle>
             <DialogContent>
 
-                {errorMessage && <Alert severity="error" sx={{marginBottom: 2}}>
-                    {errorMessage}
-                </Alert>}
+                {errorMessage && <Alert severity="error" sx={{marginBottom: 2}}>{errorMessage}</Alert>}
 
                 <Stack marginTop={1} marginBottom={2} maxWidth="20rem">
                     <TextField label={t("server.creation.name")} variant="outlined" fullWidth value={serverName}
