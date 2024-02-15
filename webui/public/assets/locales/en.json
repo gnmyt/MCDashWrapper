@@ -2,6 +2,8 @@
   "coming_soon": "Coming soon...",
   "login": {
     "sign_in": "Sign in",
+    "create_account": "Create account",
+    "setup": "Setup",
     "name": "Username",
     "password": "Password",
     "failed": "Login failed"
