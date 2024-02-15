@@ -2,14 +2,31 @@ package de.gnmyt.mcdash.api.installer;
 
 import de.gnmyt.mcdash.api.Logger;
 import de.gnmyt.mcdash.api.ServerVersionManager;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.File;
 
 public class PurpurInstaller implements VersionInstaller {
 
     private static final Logger LOG = new Logger(PurpurInstaller.class);
+    private static final OkHttpClient client = new OkHttpClient();
 
     private static final String PURPUR_URL = "https://api.purpurmc.org/v2/purpur/%s/latest/download";
+
+    @Override
+    public boolean isValidVersion(String software, String version) {
+        try {
+            Request request = new Request.Builder().url(String.format(PURPUR_URL, version)).build();
+            Response response = client.newCall(request).execute();
+
+            return response.code() == 200;
+        } catch (Exception e) {
+            LOG.error("An error occurred while checking the purpur version", e);
+            return false;
+        }
+    }
 
     @Override
     public boolean installVersion(String software, String version) {
