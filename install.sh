@@ -6,7 +6,7 @@ NC='\033[0m'
 
 export DEBIAN_FRONTEND=noninteractive
 export JAVA_VERSION="11"
-export SERVER_ROOT="/opt/mcserver"
+export SERVER_ROOT="/opt/mcdash"
 export JAVA_ROOT="${SERVER_ROOT}/java"
 
 function error() {
