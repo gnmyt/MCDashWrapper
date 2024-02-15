@@ -3,12 +3,14 @@ import {Dns, MoreVert} from "@mui/icons-material";
 import PurpurImage from "@/common/assets/software/purpur.webp";
 import PaperImage from "@/common/assets/software/paper.webp";
 import SpigotImage from "@/common/assets/software/spigot.webp";
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {isDev, PROXY_URL} from "@/common/utils/RequestUtil.js";
 import ServerInfo from "@/states/Root/pages/Overview/components/Server/components/ServerInfo";
 import ServerMenu from "@/states/Root/pages/Overview/components/Server/components/ServerMenu";
+import {SettingsContext} from "@/common/contexts/Settings";
 
 export const Server = ({uuid, configuration, status}) => {
+    const {theme} = useContext(SettingsContext);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -55,6 +57,13 @@ export const Server = ({uuid, configuration, status}) => {
             setFrameOpen(!frameOpen);
         }
     }
+
+    useEffect(() => {
+        if (frameOpen) {
+            setFrameOpen(false);
+            setTimeout(() => setFrameOpen(true), 100);
+        }
+    }, [theme]);
 
     return (
         <>
