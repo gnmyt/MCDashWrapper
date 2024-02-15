@@ -19,13 +19,14 @@ import {useContext, useEffect, useState} from "react";
 import {ServerContext} from "@/common/contexts/Server/index.js";
 import {t} from "i18next";
 import {Trans} from "react-i18next";
+import {VersionContext} from "@/common/contexts/Version";
 
 export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
 
     const EULA_URL = "https://www.minecraft.net/en-us/eula";
 
     const {updateServer} = useContext(ServerContext);
-
+    const versions = useContext(VersionContext);
 
     const [creating, setCreating] = useState(false);
 
@@ -34,7 +35,7 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
     const [serverName, setServerName] = useState("");
     const [serverDescription, setServerDescription] = useState("");
     const [serverSoftware, setServerSoftware] = useState("spigot");
-    const [serverVersion, setServerVersion] = useState("1.20.4");
+    const [serverVersion, setServerVersion] = useState(versions[0]);
     const [eulaAccepted, setEulaAccepted] = useState(false);
 
     const createServer = async () => {
@@ -53,6 +54,14 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
         setErrorMessage("");
 
         setCreating(true);
+
+        const {valid} = await (await request("check_version?version=" + serverVersion + "&software=" + serverSoftware, "GET", {}, {}, false)).json();
+
+        if (!valid) {
+            setCreating(false);
+            setErrorMessage(t("server.creation.error.not_supported", {software: serverSoftware}));
+            return;
+        }
 
         await request("server/setup", "POST", {
             name: serverName, description: serverDescription || t("server.creation.default_description"),
@@ -75,7 +84,7 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
             <DialogTitle>{t("server.creation.title")}</DialogTitle>
             <DialogContent>
 
-                {errorMessage && <Alert severity="error" sx={{marginBottom: 2}}>{errorMessage}</Alert>}
+                {errorMessage && <Alert severity="error" sx={{marginBottom: 2, maxWidth: "20rem"}}>{errorMessage}</Alert>}
 
                 <Stack marginTop={1} marginBottom={2} maxWidth="20rem">
                     <TextField label={t("server.creation.name")} variant="outlined" fullWidth value={serverName}
@@ -112,7 +121,7 @@ export const CreationDialog = ({dialogOpen, setDialogOpen}) => {
                     </Select>
                     <Select variant="outlined" fullWidth value={serverVersion}
                             onChange={(e) => setServerVersion(e.target.value)}>
-                        <MenuItem value="1.20.4">1.20.4</MenuItem>
+                        {versions.map((version) => <MenuItem key={version} value={version}>{version}</MenuItem>)}
                     </Select>
                 </Stack>
 
