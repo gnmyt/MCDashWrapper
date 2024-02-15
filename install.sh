@@ -52,6 +52,9 @@ fi
 tar -xzf java.tar.gz
 rm java.tar.gz
 
+mv jdk*/* .
+rm -r jdk*
+
 if [ ! -f "bin/java" ]; then
     error "Unable to find java"
 fi
