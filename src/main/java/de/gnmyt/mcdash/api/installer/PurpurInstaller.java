@@ -21,7 +21,10 @@ public class PurpurInstaller implements VersionInstaller {
             Request request = new Request.Builder().url(String.format(PURPUR_URL, version)).build();
             Response response = client.newCall(request).execute();
 
-            return response.code() == 200;
+            boolean isValid = response.code() == 200;
+            response.close();
+
+            return isValid;
         } catch (Exception e) {
             LOG.error("An error occurred while checking the purpur version", e);
             return false;

@@ -44,7 +44,10 @@ public class PaperInstaller implements VersionInstaller {
             okhttp3.Request request = new okhttp3.Request.Builder().url(String.format(PAPER_API, version)).build();
             okhttp3.Response response = client.newCall(request).execute();
 
-            return response.code() == 200;
+            boolean isValid = response.code() == 200;
+            response.close();
+
+            return isValid;
         } catch (Exception e) {
             LOG.error("An error occurred while checking the paper version", e);
             return false;
