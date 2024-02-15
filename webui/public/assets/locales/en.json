@@ -27,7 +27,8 @@
       "default_description": "A new server",
       "error": {
         "name": "Server name cannot be empty",
-        "eula": "You must accept the EULA"
+        "eula": "You must accept the EULA",
+        "not_supported": "This version of minecraft is not supported by {{software}}"
       },
       "title": "Create a new server",
       "name": "Server name",
