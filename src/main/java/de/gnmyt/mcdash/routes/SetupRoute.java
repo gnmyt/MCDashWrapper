@@ -16,6 +16,11 @@ public class SetupRoute extends DefaultHandler {
     }
 
     @Override
+    public boolean needsAuthorization() {
+        return false;
+    }
+
+    @Override
     public void get(Request request, ResponseController response) throws Exception {
         if (userManager.isSetupMode()) {
             response.json().add("setup", true).add("message", "The server is in setup mode").finish();
