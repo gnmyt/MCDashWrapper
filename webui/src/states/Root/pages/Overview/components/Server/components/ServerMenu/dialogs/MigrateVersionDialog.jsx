@@ -9,22 +9,32 @@ import {
     Stack
 } from "@mui/material";
 import {t} from "i18next";
-import {patchRequest} from "@/common/utils/RequestUtil.js";
+import {patchRequest, request} from "@/common/utils/RequestUtil.js";
 import {useContext, useState} from "react";
 import {ServerContext} from "@/common/contexts/Server";
 import SpigotImage from "@/common/assets/software/spigot.webp";
 import PaperImage from "@/common/assets/software/paper.webp";
 import PurpurImage from "@/common/assets/software/purpur.webp";
+import {VersionContext} from "@/common/contexts/Version/index.js";
 
 export default ({open, setOpen, uuid, setAlert, currentSoftware, currentVersion}) => {
 
+    const versions = useContext(VersionContext);
     const {updateServer} = useContext(ServerContext);
 
     const [serverSoftware, setServerSoftware] = useState(currentSoftware);
     const [serverVersion, setServerVersion] = useState(currentVersion);
 
     const migrateVersion = async () => {
+        const {valid} = await (await request("check_version?version=" + serverVersion + "&software=" + serverSoftware, "GET", {}, {}, false)).json();
+
+        if (!valid) {
+            setAlert({severity: "error", message: t("server.creation.error.not_supported", {software: serverSoftware})});
+            return;
+        }
+
         setOpen(false);
+
         await patchRequest("server/", {uuid, type: serverSoftware, version: serverVersion});
         updateServer();
         setAlert({severity: "success", message: t("server.dialog.migrate.success")});
@@ -61,7 +71,7 @@ export default ({open, setOpen, uuid, setAlert, currentSoftware, currentVersion}
                     </Select>
                     <Select variant="outlined" fullWidth value={serverVersion}
                             onChange={(e) => setServerVersion(e.target.value)}>
-                        <MenuItem value="1.20.4">1.20.4</MenuItem>
+                        {versions.map((version) => <MenuItem key={version} value={version}>{version}</MenuItem>)}
                     </Select>
                 </Stack>
             </DialogContent>
