@@ -1,5 +1,11 @@
 {
   "coming_soon": "Coming soon...",
+  "login": {
+    "sign_in": "Sign in",
+    "name": "Username",
+    "password": "Password",
+    "failed": "Login failed"
+  },
   "common": {
     "cancel": "Cancel",
     "create": "Create"
