@@ -2,12 +2,16 @@ package de.gnmyt.mcdash.api.installer;
 
 import de.gnmyt.mcdash.api.Logger;
 import de.gnmyt.mcdash.api.ServerVersionManager;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class SpigotInstaller implements VersionInstaller {
 
+    private static final OkHttpClient client = new OkHttpClient();
     private static final Logger LOG = new Logger(SpigotInstaller.class);
 
     private final ArrayList<String> SPIGOT_URLS = new ArrayList<>();
@@ -16,6 +20,28 @@ public class SpigotInstaller implements VersionInstaller {
         SPIGOT_URLS.add("https://download.getbukkit.org/spigot/spigot-%s.jar");
         SPIGOT_URLS.add("https://cdn.getbukkit.org/spigot/spigot-%s.jar");
         SPIGOT_URLS.add("https://cdn.getbukkit.org/spigot/spigot-%s-R0.1-SNAPSHOT-latest.jar");
+    }
+
+    @Override
+    public boolean isValidVersion(String software, String version) {
+        try {
+            for (String url : SPIGOT_URLS) {
+                Request request = new Request.Builder().url(String.format(url, version)).build();
+                Response response = client.newCall(request).execute();
+
+                if (response.body().contentLength() > 20000) {
+                    response.close();
+                    return true;
+                }
+
+                response.close();
+            }
+
+            return false;
+        } catch (Exception e) {
+            LOG.error("An error occurred while checking the spigot version", e);
+            return false;
+        }
     }
 
     @Override
