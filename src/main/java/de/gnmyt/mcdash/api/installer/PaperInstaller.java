@@ -39,6 +39,19 @@ public class PaperInstaller implements VersionInstaller {
     }
 
     @Override
+    public boolean isValidVersion(String software, String version) {
+        try {
+            okhttp3.Request request = new okhttp3.Request.Builder().url(String.format(PAPER_API, version)).build();
+            okhttp3.Response response = client.newCall(request).execute();
+
+            return response.code() == 200;
+        } catch (Exception e) {
+            LOG.error("An error occurred while checking the paper version", e);
+            return false;
+        }
+    }
+
+    @Override
     public boolean installVersion(String software, String version) {
         try {
             String paperVersion = getPaperVersion(version);
