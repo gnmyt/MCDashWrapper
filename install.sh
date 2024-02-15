@@ -16,7 +16,7 @@ function error() {
 
 function download() {
     if wget -S --spider "$1" 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-        wget -q --show-progress "$2" "$1"
+        wget -q --show-progress -O "$2" "$1"
     fi
 }
 
