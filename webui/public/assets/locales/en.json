@@ -10,6 +10,7 @@
   },
   "server": {
     "creation": {
+      "default_description": "A new server",
       "error": {
         "name": "Server name cannot be empty",
         "eula": "You must accept the EULA"
@@ -24,8 +25,54 @@
     "loading": "Loading",
     "share": "Share",
     "start": "Start",
-    "stop": "Stop",
+    "stop": "Stop server",
+    "rename": "Rename server",
+    "update_description": "Update description",
+    "migrate": "Migrate version",
+    "delete": "Delete server",
+    "enable_start_on_boot": "Start on boot",
+    "disable_start_on_boot": "Don't start on boot",
+    "update_ram": "Update RAM",
     "create": "Create Server",
-    "overview": "Server Overview"
+    "overview": "Server Overview",
+    "starting": "The server has been started. Please wait a few seconds for it to be ready.",
+    "stopping": "A server shutdown has been queued. It may take a few seconds to shut down.",
+    "deleting": "The server is being deleted. This may take a few seconds.",
+    "no_servers": "You don't have any servers yet. Click on the button to create one.",
+    "waiting": "The server is either starting or the connection is being established. Please wait a few seconds.",
+    "dialog": {
+      "rename": {
+        "title": "Rename server",
+        "button": "Rename",
+        "success": "Server renamed successfully"
+      },
+      "update_description": {
+        "title": "Update description",
+        "button": "Update",
+        "success": "Description updated successfully"
+      },
+      "migrate": {
+        "title": "Migrate version",
+        "warning": "Make sure you have a backup of your server before migrating.",
+        "button": "Migrate",
+        "success": "Server migrated successfully. You need to restart the server for the changes to take effect."
+      },
+      "memory": {
+        "title": "Update RAM",
+        "memory": "Memory",
+        "unit": "MB",
+        "button": "Update",
+        "success": "RAM updated successfully"
+      },
+      "toggle_start_on_boot": {
+        "success": "Start on boot setting updated successfully"
+      },
+      "delete": {
+        "title": "Delete server",
+        "warning": "This action is irreversible. All data will be lost.",
+        "button": "Delete",
+        "success": "Server deleted successfully"
+      }
+    }
   }
 }
