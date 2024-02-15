@@ -1,10 +1,7 @@
 package de.gnmyt.mcdash;
 
 import com.sun.net.httpserver.HttpServer;
-import de.gnmyt.mcdash.api.ConfigurationManager;
-import de.gnmyt.mcdash.api.DashShutdownHook;
-import de.gnmyt.mcdash.api.Logger;
-import de.gnmyt.mcdash.api.ServerManager;
+import de.gnmyt.mcdash.api.*;
 import de.gnmyt.mcdash.handler.DefaultHandler;
 import de.gnmyt.mcdash.handler.ProxyHandler;
 import de.gnmyt.mcdash.handler.StaticHandler;
@@ -22,6 +19,7 @@ public class MCDashWrapper {
     private static final ConfigurationManager config = new ConfigurationManager();
     private static final int SERVER_PORT = System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 7865;
     private static final ServerManager serverManager = new ServerManager();
+    private static final UserManager userManager = new UserManager();
 
     private static HttpServer server;
 
@@ -138,6 +136,15 @@ public class MCDashWrapper {
      */
     public static ServerManager getServerManager() {
         return serverManager;
+    }
+
+    /**
+     * Gets the user manager
+     *
+     * @return the user manager
+     */
+    public static UserManager getUserManager() {
+        return userManager;
     }
 }
 
