@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import de.gnmyt.mcdash.MCDashWrapper;
 import de.gnmyt.mcdash.api.Logger;
+import de.gnmyt.mcdash.api.UserManager;
 import de.gnmyt.mcdash.http.Request;
 import de.gnmyt.mcdash.http.ResponseController;
 import de.gnmyt.mcdash.http.HTTPMethod;
@@ -12,15 +13,55 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
 
 public abstract class DefaultHandler implements HttpHandler {
 
     private static final Logger LOG = new Logger(DefaultHandler.class);
+    private static final UserManager userManager = MCDashWrapper.getUserManager();
+
+    /**
+     * Checks if the route needs an authorization
+     * @return <code>true</code> if the route needs an authorization
+     */
+    public boolean needsAuthorization() {
+        return true;
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
         Request request = prepareRequest(exchange);
         ResponseController controller = new ResponseController(exchange);
+
+        if (needsAuthorization()) {
+            List<String> authHeader = request.getHeaders().get("Authorization");
+            if (authHeader == null) {
+                controller.code(400).message("You need to provide your credentials");
+                return;
+            }
+
+            String[] authCredentials;
+            try {
+                authCredentials = new String(Base64.getDecoder().decode(authHeader.get(0)
+                        .replace("Basic ", ""))).split(":");
+            } catch (Exception e) {
+                controller.code(400).message("You need to provide your credentials");
+                return;
+            }
+
+            if (authCredentials.length != 2) {
+                controller.code(400).message("You need to provide your credentials");
+                return;
+            }
+
+            if (!userManager.isPasswordCorrect(authCredentials[0], authCredentials[1])) {
+                controller.code(401).message("The provided credentials are invalid");
+                return;
+            }
+        }
+
+
         execute(request, controller);
     }
 
