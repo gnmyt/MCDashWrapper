@@ -10,7 +10,7 @@ const getHeaders = () => {
 
 export const proxyRequest = async (path, method = "GET", body = {}, headers = {}) => {
     return await fetch(PROXY_URL + "/" + path, {
-        headers: {...getHeaders(), ...headers}, method,
+        headers: {...headers}, method,
         body: method !== "GET" ? new URLSearchParams(body) : undefined
     });
 }
