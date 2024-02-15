@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class ProxyHandler implements HttpHandler {
 
@@ -37,11 +38,13 @@ public class ProxyHandler implements HttpHandler {
 
         RequestBody requestBody = exchange.getRequestMethod().equals("GET") ? null : RequestBody.create(IOUtils.toByteArray(exchange.getRequestBody()), null);
 
+        String serverKey = serverManager.getServer(uuid).getConfiguration().getProxyKey();
+
         Request request = new Request.Builder()
                 .url("http://localhost:" + serverManager.getServer(uuid).getDashPort() + pathWithoutUuid)
                 .method(exchange.getRequestMethod(), requestBody)
                 .header("User-Agent", "MCDash-Wrapper")
-                .header("Authorization", "Basic Q09OU09MRTp0ZXN0MTIz")
+                .header("Authorization", String.format("Basic %s", Base64.getEncoder().encodeToString(("PROXY:" + serverKey).getBytes())))
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
