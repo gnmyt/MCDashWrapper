@@ -11,14 +11,15 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import LightTheme from "@/common/themes/light.js";
 import DarkTheme from "@/common/themes/dark.js";
 import {SettingsContext} from "@/common/contexts/Settings";
+import {VersionProvider} from "@/common/contexts/Version";
 
 export default () => {
     const [translationsLoaded, setTranslationsLoaded] = useState(false);
     const {theme} = useContext(SettingsContext);
 
     const router = createBrowserRouter([
-        {path: "/login", element: <Login />},
-        {path: "/", element: <ServerProvider><Root /></ServerProvider>, children: routes}
+        {path: "/login", element: <Login/>},
+        {path: "/", element: <ServerProvider><Root/></ServerProvider>, children: routes}
     ]);
 
     i18n.on("initialized", () => setTranslationsLoaded(true));
@@ -28,9 +29,11 @@ export default () => {
     return (
         <>
             <ThemeProvider theme={theme === "dark" ? DarkTheme : LightTheme}>
-                <CssBaseline />
+                <CssBaseline/>
                 <TokenProvider>
-                    <RouterProvider router={router} />
+                    <VersionProvider>
+                        <RouterProvider router={router}/>
+                    </VersionProvider>
                 </TokenProvider>
             </ThemeProvider>
 
