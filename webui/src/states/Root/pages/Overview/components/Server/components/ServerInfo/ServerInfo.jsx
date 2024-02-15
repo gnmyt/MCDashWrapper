@@ -17,12 +17,13 @@ export const ServerInfo = ({status, uuid, serverInfo, setServerInfo, setAlert}) 
     }
 
     useEffect(() => {
+        if (status !== "ONLINE") return;
         updateServerInfo();
 
         const interval = setInterval(() => updateServerInfo(), 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [status]);
 
 
     return (
