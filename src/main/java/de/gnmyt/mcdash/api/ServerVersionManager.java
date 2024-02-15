@@ -112,9 +112,8 @@ public class ServerVersionManager {
      * Sets up the plugin
      * @param uuid the uuid
      * @param port the port
-     * @param token the token
      */
-    public void setupPlugin(String uuid, int port, String token) {
+    public void setupPlugin(String uuid, int port) {
         File file = new File(serverFolder, uuid);
         if (!file.exists()) {
             LOG.error("The server does not exist");
@@ -127,14 +126,6 @@ public class ServerVersionManager {
         if (config.exists()) config.delete();
         try {
             FileUtils.writeStringToFile(config, "port: " + port, "UTF-8");
-        } catch (IOException e) {
-            LOG.error("An error occurred while setting up the plugin: " + e.getMessage());
-        }
-
-        File accounts = new File(pluginsFolder, "MinecraftDashboard/accounts.yml");
-        if (accounts.exists()) accounts.delete();
-        try {
-            FileUtils.writeStringToFile(accounts, "accounts:\n  " + token, "UTF-8");
         } catch (IOException e) {
             LOG.error("An error occurred while setting up the plugin: " + e.getMessage());
         }
