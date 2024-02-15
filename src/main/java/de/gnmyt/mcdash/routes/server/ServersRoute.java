@@ -1,6 +1,8 @@
 package de.gnmyt.mcdash.routes.server;
 
 import de.gnmyt.mcdash.MCDashWrapper;
+import de.gnmyt.mcdash.api.ServerManager;
+import de.gnmyt.mcdash.api.ServerVersionManager;
 import de.gnmyt.mcdash.entities.Server;
 import de.gnmyt.mcdash.handler.DefaultHandler;
 import de.gnmyt.mcdash.http.Request;
@@ -10,9 +12,10 @@ import org.apache.commons.io.FileUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static de.gnmyt.mcdash.routes.server.ServerStartRoute.serverManager;
-
 public class ServersRoute extends DefaultHandler {
+
+    private final ServerManager serverManager = MCDashWrapper.getServerManager();
+    private final ServerVersionManager versionManager = MCDashWrapper.getServerManager().getVersionManager();
 
     @Override
     public void get(Request request, ResponseController response) throws Exception {
@@ -34,6 +37,63 @@ public class ServersRoute extends DefaultHandler {
         }
 
         response.jsonArray(servers);
+    }
+
+    @Override
+    public void patch(Request request, ResponseController response) throws Exception {
+        if (!isStringInBody(request, response, "uuid")) return;
+
+        if (serverManager.getServer(getStringFromBody(request, "uuid")) == null) {
+            response.code(404).message("The server does not exist");
+            return;
+        }
+
+        Server server = serverManager.getServer(getStringFromBody(request, "uuid"));
+
+        int totalChanges = 0;
+
+        if (request.getBody().containsKey("name") && isStringInBody(request, response, "name")) {
+            server.getConfiguration().setName(getStringFromBody(request, "name"));
+            totalChanges++;
+        }
+
+        if (request.getBody().containsKey("description") && isStringInBody(request, response, "description")) {
+            server.getConfiguration().setDescription(getStringFromBody(request, "description"));
+            totalChanges++;
+        }
+
+        if (request.getBody().containsKey("type") && isStringInBody(request, response, "type")) {
+            if (!versionManager.getInstallers().containsKey(getStringFromBody(request, "type"))) {
+                response.code(404).message("The server software could not be found");
+                return;
+            }
+
+            server.getConfiguration().setType(getStringFromBody(request, "type"));
+            totalChanges++;
+        }
+
+        if (request.getBody().containsKey("version") && isStringInBody(request, response, "version")) {
+            server.getConfiguration().setVersion(getStringFromBody(request, "version"));
+            totalChanges++;
+        }
+
+        if (request.getBody().containsKey("memory") && isIntegerInBody(request, response, "memory")) {
+            server.getConfiguration().setMemory(getIntegerFromBody(request, "memory"));
+            totalChanges++;
+        }
+
+        if (request.getBody().containsKey("autoStart") && isBooleanInBody(request, response, "autoStart")) {
+            server.getConfiguration().setAutoStart(getBooleanFromBody(request, "autoStart"));
+            totalChanges++;
+        }
+
+        if (totalChanges == 0) {
+            response.code(400).message("You need to provide at least one change");
+            return;
+        }
+
+        serverManager.refreshServers();
+        response.message(String.format("%d changes have been successfully applied", totalChanges));
     }
 
     @Override
