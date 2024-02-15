@@ -37,6 +37,9 @@ export const Overview = () => {
                     <Server key={server.uuid} uuid={server.uuid} configuration={server.configuration}
                             status={server.status}/>
                 ))}
+                {server !== null && server.length === 0 && (
+                    <Typography variant="body2" textAlign="center">{t("server.no_servers")}</Typography>
+                )}
             </Stack>
         </>
     )
