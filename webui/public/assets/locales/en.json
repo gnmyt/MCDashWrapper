@@ -12,6 +12,12 @@
     "cancel": "Cancel",
     "create": "Create"
   },
+  "header": {
+    "support_me": "Support me",
+    "light_theme": "Light theme",
+    "dark_theme": "Dark theme",
+    "logout": "Logout"
+  },
   "nav": {
     "server": "Server",
     "ports": "Shares"
