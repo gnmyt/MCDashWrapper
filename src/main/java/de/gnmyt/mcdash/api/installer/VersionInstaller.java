@@ -14,6 +14,14 @@ public interface VersionInstaller {
     OkHttpClient client = new OkHttpClient();
 
     /**
+     * Checks if a specific version of a software is valid
+     * @param software the software
+     * @param version the version
+     * @return <code>true</code> if the version is valid
+     */
+    boolean isValidVersion(String software, String version);
+
+    /**
      * Installs a specific version of the minecraft server software
      *
      * @param software the software
