@@ -103,9 +103,8 @@ public class ServerManager {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(javaManager.getPath(config.getVersion()),
                     "-jar", "-Xmx" + config.getMemory() + "M",
-                    "-Xms" + config.getMemory() + "M", "-Dcom.mojang.eula.agree=true", // "-Djava.awt.headless=true",
-                    versionManager.getPath(config.getType(), config.getVersion())//, "nogui"
-            );
+                    "-Xms" + config.getMemory() + "M", "-Dcom.mojang.eula.agree=true", "-Djava.awt.headless=true",
+                    versionManager.getPath(config.getType(), config.getVersion()), "nogui");
             processBuilder.directory(new File(serverFolder, server.getName()));
             Process process = processBuilder.start();
 
