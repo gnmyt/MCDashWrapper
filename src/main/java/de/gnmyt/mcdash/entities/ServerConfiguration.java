@@ -1,12 +1,13 @@
 package de.gnmyt.mcdash.entities;
 
-import com.google.gson.Gson;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import de.gnmyt.mcdash.api.Logger;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class ServerConfiguration {
@@ -33,6 +34,9 @@ public class ServerConfiguration {
 
     @Expose(serialize = true, deserialize = true)
     private boolean autoStart;
+
+    @Expose(serialize = true, deserialize = true)
+    private String proxyKey;
 
     /**
      * Loads a server configuration from a file
@@ -132,6 +136,14 @@ public class ServerConfiguration {
     }
 
     /**
+     * Gets the proxy key of the server
+     * @return The proxy key of the server
+     */
+    public String getProxyKey() {
+        return proxyKey;
+    }
+
+    /**
      * Gets the auto start of the server
      * @return The auto start of the server
      */
@@ -195,6 +207,26 @@ public class ServerConfiguration {
      */
     public void setAutoStart(boolean autoStart) {
         this.autoStart = autoStart;
+        save();
+    }
+
+    /**
+     * Sets the proxy key of the server
+     * @param proxyKey The new proxy key of the server
+     */
+    public void setProxyKey(String proxyKey) {
+        File pluginsFolder = new File(file.getParentFile(), "plugins");
+        File accounts = new File(pluginsFolder, "MinecraftDashboard/accounts.yml");
+        if (accounts.exists()) accounts.delete();
+
+        try {
+            String hashedKey = "PROXY: " + BCrypt.withDefaults().hashToString(10, proxyKey.toCharArray());
+            FileUtils.writeStringToFile(accounts, "accounts:\n  " + hashedKey, "UTF-8");
+        } catch (IOException e) {
+            LOG.error("An error occurred while setting up the plugin: " + e.getMessage());
+        }
+
+        this.proxyKey = proxyKey;
         save();
     }
 
