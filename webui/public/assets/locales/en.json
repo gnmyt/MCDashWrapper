@@ -1,0 +1,31 @@
+{
+  "coming_soon": "Coming soon...",
+  "common": {
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "nav": {
+    "server": "Server",
+    "ports": "Shares"
+  },
+  "server": {
+    "creation": {
+      "error": {
+        "name": "Server name cannot be empty",
+        "eula": "You must accept the EULA"
+      },
+      "title": "Create a new server",
+      "name": "Server name",
+      "description": "Server description",
+      "eula": "I accept the <Link>EULA</Link>",
+      "creating": "Creating..."
+    },
+    "not_connected": "Not connected",
+    "loading": "Loading",
+    "share": "Share",
+    "start": "Start",
+    "stop": "Stop",
+    "create": "Create Server",
+    "overview": "Server Overview"
+  }
+}
