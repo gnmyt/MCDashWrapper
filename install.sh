@@ -18,6 +18,12 @@ function download() {
     wget -q --show-progress -O "$2" "$1"
 }
 
+echo -e "${GREEN}Checking for root${NC}"
+
+if [ "$EUID" -ne 0 ]; then
+    error "Please run as root"
+fi
+
 echo -e "${GREEN}Installing dependencies${NC}"
 
 apt-get update
