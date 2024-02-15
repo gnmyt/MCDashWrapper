@@ -63,7 +63,6 @@ public class ProxyHandler implements HttpHandler {
             }
 
         } catch (IOException e) {
-            LOG.error("An error occurred while proxying the request: {}", e.getMessage());
             exchange.sendResponseHeaders(500, 0);
         } finally {
             exchange.close();
