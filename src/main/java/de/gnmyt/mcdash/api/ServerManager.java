@@ -113,7 +113,7 @@ public class ServerManager {
             server.setStatus(ServerStatus.ONLINE);
             server.setProcess(process);
         } catch (Exception e) {
-            LOG.error("An error occurred while starting the server", e);
+            LOG.error("An error occurred while starting the server", e.getMessage());
         }
 
         LOG.info("Server {} has been started", server.getName());
