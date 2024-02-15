@@ -25,6 +25,21 @@ public class SetupRoute extends DefaultHandler {
         return "setup";
     }
 
+    /**
+     * Generates a random key
+     *
+     * @return the generated random key
+     */
+    public String generateRandomKey() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder pass = new StringBuilder();
+        for (int x = 0; x < 16; x++) {
+            int i = (int) Math.floor(Math.random() * 62);
+            pass.append(chars.charAt(i));
+        }
+        return pass.toString();
+    }
+
     @Override
     public void post(Request request, ResponseController response) throws Exception {
         if (!isStringInBody(request, response, "name")) return;
@@ -67,7 +82,9 @@ public class SetupRoute extends DefaultHandler {
 
             versionManager.installPlugin(uuid);
 
-            versionManager.setupPlugin(uuid, new Random().nextInt(10000) + 10000, "CONSOLE: $2a$10$9bBbchyQKSzLprRwEIz/cu3emhY/Ilie9KXQFtEpraP0gSTMpxEei");
+            versionManager.setupPlugin(uuid, new Random().nextInt(10000) + 10000);
+
+            configuration.setProxyKey(generateRandomKey());
 
             serverManager.refreshServers();
 
