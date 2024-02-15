@@ -28,7 +28,7 @@ MCDash Wrapper combines the power of MCDash with a wrapper to create servers eas
 ### Overview
 ![Screenshot 1](https://i.imgur.com/6Fz2al6.png)
 
-### Panel
+### Panel [[More here]](https://github.com/gnmyt/MCDash)
 ![Screenshot 2](https://i.imgur.com/iAyHVnN.png)
 
 ### Server Creation
