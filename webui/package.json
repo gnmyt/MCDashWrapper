@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.17",
-    "@mui/icons-material": "^5.15.12",
+    "@mui/icons-material": "^5.15.13",
     "@mui/material": "^5.15.13",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.0",
