@@ -15,7 +15,7 @@
     "@fontsource/inter": "^5.0.18",
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
-    "i18next": "^23.11.3",
+    "i18next": "^23.11.4",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.1",
     "react": "^18.3.1",
