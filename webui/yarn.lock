@@ -2331,10 +2331,10 @@ react-dom@^18.3.1:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
 
-react-i18next@^15.1.0:
-  version "15.1.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-15.1.0.tgz#9494e4add2389f04c205dd7628c1aa75747b98a3"
-  integrity sha512-zj3nJynMnZsy2gPZiOTC7XctCY5eQGqT3tcKMmfJWC9FMvgd+960w/adq61j8iPzpwmsXejqID9qC3Mqu1Xu2Q==
+react-i18next@^15.1.4:
+  version "15.1.4"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-15.1.4.tgz#65c03c31a5e42202000652e163f22f23a9306a60"
+  integrity sha512-2tai71gmehbvl9ZIqPMqlCCkm/cbeV1G4STpmM3C8Uzo6T2l8jDvZxEVSsQKt8blP9X34iRFP/k1ROqG2296MQ==
   dependencies:
     "@babel/runtime" "^7.25.0"
     html-parse-stringify "^3.0.1"
